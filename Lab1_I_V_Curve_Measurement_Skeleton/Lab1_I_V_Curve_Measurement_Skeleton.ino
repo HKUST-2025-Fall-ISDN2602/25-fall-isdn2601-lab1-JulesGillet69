@@ -2,21 +2,18 @@
 
 #define Vin 12 //*** Define the GPIO pin 12 as Vin ***
 #define Vout 27//*** Define the GPIO pin 27 as Vout ***
-#define Cal 14//*** Define the GPIO pin 14 as the node for current calcultion ***
 
-// float R = ; *** Resistance in Mohm ***
 
 float x;
 float y;
-// float c;
 
 void setup() {
 
   Serial.begin(115200); //*** Define the data rate as 115200 ***
   pinMode(Vin , OUTPUT); //*** Set Vin as OUTPUT ***
   pinMode(Vout , INPUT); //*** Set Vout as INPUT ***
-  // pinMode(Cal, INPUT); //*** Set Cal as INPUT ***
-  
+
+
   delay(100);   //*** Set 100 ms delay ***
   //This task only needs to be done once, thus it is placed in setup().
   Serial.println(" Duty(%),Vout(V) "); // display duty cycle,Vout for TASK 1 or I,Vout for Task 2 3 4
@@ -27,10 +24,8 @@ void setup() {
     
     analogWrite(Vin , map(onPeriod, 0, 255, 0, 4095));// Output PWM at Vin      
     int Vout_value = analogRead(Vout); // read the voltage level at Vout 
-    // int c_value = analogRead(Cal); // read the voltage level at the node for current calcultion  
-    // c=  ;//calculate the voltage at the node for current calcultion  
-    x =  onPeriod /255.0 * 100.0 ; // calculate duty cycle for TASK 1 or the voltage at Vout in mV for Task 2 3 4
-    y = Vout_value * (3.3/ 4095.0) ; // calculate the voltage at Vout in V for TASK 1 or current in uA for Task 2 3 4
+    x = float(onPeriod)*100/255 ; // calculate duty cycle for TASK 1
+    y = float(Vout_value*3.3)/4095 ; // convert 12 bit binary number of Vout back to 0-3.3 V 
     Serial.print(x); 
     Serial.print(","); // seperate values by comma 
     Serial.println(y);
